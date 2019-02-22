@@ -26,15 +26,15 @@ class sendEmail(Thread):
         print("5.开始发送汇总统计Excel文件...")
         msg = MIMEText('hello, send by Python...', 'plain', 'utf-8')
         # 输入Email地址和口令:
-        from_addr = "zhouqirong@lifeisgreat.com.cn"
-        password = "Zqr,123456"
+        from_addr = "username@XXXX.com.cn"
+        password = "password"
         # 输入SMTP服务器地址:
-        smtp_server = "smtp.lifeisgreat.com.cn"
+        smtp_server = "smtp.XXXX.com.cn"
         # 输入收件人地址:
-        to_addr = "zhouqirong@lifeisgreat.com.cn"
+        to_addr = "username@XXXX.com.cn"
         msg = MIMEMultipart()
-        msg['From'] = self.emailFormatAddr(u'周启荣<%s>' % from_addr)
-        msg['To'] = self.emailFormatAddr(u'岳金伟<%s>' % to_addr)
+        msg['From'] = self.emailFormatAddr(u'zhangsan<%s>' % from_addr)
+        msg['To'] = self.emailFormatAddr(u'lisi<%s>' % to_addr)
         msg['Subject'] = Header(u'Jira{0}年{1}月任务量统计'.format(self.year, self.month), 'utf-8').encode()
 
         # 邮件正文内容
