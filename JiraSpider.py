@@ -17,11 +17,11 @@ class JiraSpider(scrapy.Spider):
     name = "jira"
 
     # 设置允许访问Jira域名
-    allowed_domain = "http://jira.lifeisgreat.com.cn"
+    allowed_domain = "http://jira.XXXX.com.cn"
 
     # 设置Jira初始访问页面
     start_urls = [
-        "http://jira.lifeisgreat.com.cn/secure/Dashboard.jspa"
+        "http://jira.XXXX.com.cn/secure/Dashboard.jspa"
     ]
 
     # 设置浏览器用户代理
@@ -77,7 +77,7 @@ class JiraSpider(scrapy.Spider):
 
     def start_requests(self):
         print("1.开始请求JIRA登录页面...")
-        yield Request("http://jira.lifeisgreat.com.cn/login.jsp",meta={'cookiejar':1}, callback=self.login)
+        yield Request("http://jira.XXXX.com.cn/login.jsp",meta={'cookiejar':1}, callback=self.login)
 
         #print('主进程启动发送邮件线程开始...')
         #t = sendEmail(self.year,self.month)
@@ -90,11 +90,11 @@ class JiraSpider(scrapy.Spider):
         print("2.提交用户名密码登录Jira账户...")
         #设置登录用户密码，登录JIRA
         return [FormRequest.from_response(response,
-                                          "http://jira.lifeisgreat.com.cn/login.jsp",
+                                          "http://jira.XXXX.com.cn/login.jsp",
                                           meta={'cookiejar': response.meta['cookiejar']},
                                           headers=self.header,
-                                          formdata={'os_username': 'zhouqirong',
-                                                    'os_password': 'Abcd1314',###################################注意更改密码
+                                          formdata={'os_username': 'username',
+                                                    'os_password': 'password',###################################注意更改密码
                                                     'os_destination': '',
                                                     'user_role': '',
                                                     'atl_token': '',
@@ -106,7 +106,7 @@ class JiraSpider(scrapy.Spider):
     def go_my_filter_page(self, response):
         print("3.登录我收藏的过滤器，月度任务统计...")
         #设置登陆后跳转至个人收藏的过滤器，过滤器（filter = 10961）月度任务统计,
-        return [Request("http://jira.lifeisgreat.com.cn/issues/?filter=10961", meta={'cookiejar': 1},
+        return [Request("http://jira.XXXX.com.cn/issues/?filter=10961", meta={'cookiejar': 1},
                         callback=self.my_filter_count)]
 
     #组装参数查询项目类型任务数
@@ -128,7 +128,7 @@ class JiraSpider(scrapy.Spider):
                 jql = "project = " + key + " AND issuetype = " + value + " AND created >= " + self.startDate.strftime(
                             '%Y-%m-%d') + " AND created <=" + self.endDate.strftime('%Y-%m-%d')
                 yield FormRequest(
-                    url="http://jira.lifeisgreat.com.cn/rest/issueNav/1/issueTable",
+                    url="http://jira.XXXX.com.cn/rest/issueNav/1/issueTable",
                     headers=self.header_nocheck,
                     meta={'cookiejar': response.meta['cookiejar'], 'project': key, 'issuetype': value, 'case': case,
                           'startDate': self.startDate.strftime('%Y-%m-%d'),
@@ -147,7 +147,7 @@ class JiraSpider(scrapy.Spider):
              jql = "project = " + key + " AND issuetype = " + value + " AND 问题原因 = " + case + " AND created >= " + self.startDate.strftime(
                  '%Y-%m-%d') + " AND created <=" + self.endDate.strftime('%Y-%m-%d')
              yield FormRequest(
-                 url="http://jira.lifeisgreat.com.cn/rest/issueNav/1/issueTable",
+                 url="http://jira.XXXX.com.cn/rest/issueNav/1/issueTable",
                  headers=self.header_nocheck,
                  meta={'cookiejar': response.meta['cookiejar'], 'project': key, 'issuetype': value, 'case': case,
                        'startDate': self.startDate.strftime('%Y-%m-%d'), 'endDate': self.endDate.strftime('%Y-%m-%d')},
